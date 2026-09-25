@@ -22,11 +22,11 @@ BYRON_TILE_IMG = ('https://www.datocms-assets.com/190151/1782283165-shutterstock
                   '?fm=jpg&w=530&h=170&fit=crop&crop=focalpoint&fp-y=0.55')
 
 # street, suburb, bed, bath, car, start, end, id, slug, image (after CDN prefix)
-# bed/bath None -> no spec line. car '-' -> CAR dropped.
+# bed as a string -> used verbatim as the spec line (land size etc). car '-' -> CAR dropped.
 LNS = [
     ('3/7 Warringah Road', 'Mosman', 3, 2, '2', '09:00', '09:30', '1P11088', '3-7-warringah-road-mosman-nsw-1p110883', '1P11088/178695921520668526-rsd.jpg'),
     ('2304/168 Walker Street', 'North Sydney', 4, 3, '2', '09:00', '09:30', '1P11127', '2304-168-walker-street-north-sydney-nsw-1p111273', '1P11127/178658708409866867-rsd.jpg'),
-    # 18 Baringa Road, Northbridge — EXCLUDED: Notion row carries 1P11051 / 42 Jeffreys Street URL + image
+    ('18 Baringa Road', 'Northbridge', '5 BED &nbsp;5 BATH &nbsp;2 CAR &nbsp;645SQM', None, '-', '09:30', '10:00', '1P11269', '18-baringa-road-northbridge-nsw-1p112693', '1P11269/1790144099719818097878657-rsd.jpg'),
     ('201/171-179 Avenue Road', 'Mosman', 2, 2, '2', '09:45', '10:15', '1P10076', '201-171-179-avenue-road-mosman-nsw-1p100763', '1P10076/1788417897827688437238296-rsd.jpg'),
     ('26 Kirkoswald Avenue', 'Mosman', 4, 3, '2', '10:00', '10:30', '1P9267', '26-kirkoswald-avenue-mosman-nsw-1p92673', '1P9267/177016557964902528-rsd.jpg'),
     ('34 Willowie Road', 'Castle Cove', 5, 5, '4', '10:30', '11:00', '1P11087', '34-willowie-road-castle-cove-nsw-1p110873', '1P11087/1788245496747925967281019-rsd.jpg'),
@@ -34,13 +34,14 @@ LNS = [
     ('21 Hopetoun Avenue', 'Mosman', 5, 5, '4', '10:45', '11:15', '1P11277', '21-hopetoun-avenue-mosman-nsw-1p112773', '1P11277/178830458362255028-rsd.jpg'),
     ('18 Stanton Road', 'Mosman', 5, 3, '-', '11:00', '11:30', '1P11264', '18-stanton-road-mosman-nsw-1p112643', '1P11264/178823596185497936-rsd.jpg'),
     ('2 Lodge Road', 'Cremorne', 4, 3, '2', '11:00', '11:30', '1P11177', '2-lodge-road-cremorne-nsw-1p111773', '1P11177/178728006760021954-rsd.jpg'),
-    ('20 Stanton Road', 'Mosman', None, None, '-', '11:00', '11:30', '1P11239', '20-stanton-road-mosman-nsw-1p112393', '1P11239/178831389698827247-rsd.jpg'),
+    ('20 Stanton Road', 'Mosman', '763SQM', None, '-', '11:00', '11:30', '1P11239', '20-stanton-road-mosman-nsw-1p112393', '1P11239/178831389698827247-rsd.jpg'),
     ('16 Redan Street', 'Mosman', 4, 4, '2', '11:15', '11:45', '1P10981', '16-redan-street-mosman-nsw-1p109813', '1P10981/178832618570662508-rsd.jpg'),
     ('9 Sirius Avenue', 'Mosman', 5, 6, '4', '11:45', '12:15', '1P8796', '9-sirius-avenue-mosman-nsw-1p87963', '1P8796/1770768943159263626307684-rsd.jpg'),
     ('73 Minimbah Road', 'Northbridge', 4, 2, '2', '11:45', '12:15', '1P10268', '73-minimbah-road-northbridge-nsw-1p102683', '1P10268/1771925121410736862587853-rsd.jpg'),
     ('5 Churchill Crescent', 'Cammeray', 5, 3, '4', '11:45', '12:15', '1P10469', '5-churchill-crescent-cammeray-nsw-1p104693', '1P10469/178660470842838282-rsd.jpg'),
     ('106 Raglan Street', 'Mosman', 4, 2, '1', '12:00', '12:30', '1P11002', '106-raglan-street-mosman-nsw-1p110023', '1P11002/178651521967437178-rsd.jpg'),
     ('8 Prince Albert Street', 'Mosman', 6, 5, '4', '12:30', '13:00', '1P10388', '8-prince-albert-street-mosman-nsw-1p103883', '1P10388/178649565094760368-rsd.jpg'),
+    ('42 Jeffreys Street', 'Kirribilli', 4, 4, '-', '12:45', '13:15', '1P11051', '42-jeffreys-street-kirribilli-nsw-1p110513', '1P11051/178581991527892270-rsd.jpg'),
     ('4D/46-48 Muston Street', 'Mosman', 3, 2, '2', '13:00', '13:30', '1P10692', '4d-46-48-muston-street-mosman-nsw-1p106923', '1P10692/178530983874451256-rsd.jpg'),
     ('2a Cross Street', 'Mosman', 5, 5, '4', '13:00', '13:30', '1P11251', '2a-cross-street-mosman-nsw-1p112513', '1P11251/178823760909918252-rsd.jpg'),
     ('1 Buena Vista Avenue', 'Mosman', 6, 3, '4', '13:30', '14:00', '1P10213', '1-buena-vista-avenue-mosman-nsw-1p102133', '1P10213/178780873615940024-rsd.jpg'),
@@ -77,8 +78,8 @@ def t12(hhmm):
 
 
 def specs(bed, bath, car):
-    if bed is None:
-        return ''
+    if isinstance(bed, str):
+        return bed
     s = f'{bed} BED &nbsp;{bath} BATH'
     return s + (f' &nbsp;{car} CAR' if car.strip() not in ('', '-', '0') else '')
 
@@ -222,7 +223,7 @@ d = one(r'class="es-wrapper-color" lang="en" style="background-color:transparent
 d = re.sub(r'#2cb543', 'transparent', d, flags=re.I)
 
 # --- Guards
-for gone in ('Balmoral QLD', 'office/brisbane', 'fm=avif', '42 Jeffreys Street'):
+for gone in ('Balmoral QLD', 'office/brisbane', 'fm=avif'):
     assert gone not in d, f'leftover: {gone}'
 assert d.count('OPEN INSPECTION</strong>') == len(LNS) + len(STH) + len(BYB)
 assert len(re.findall(r'padding:15px 30px 60px', d)) == 3
