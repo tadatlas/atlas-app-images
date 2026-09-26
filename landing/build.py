@@ -8,21 +8,22 @@ import base64, pathlib, sys
 HERE = pathlib.Path(__file__).parent
 CDN = "https://cdn.jsdelivr.net/gh/tadatlas/atlas-app-fonts@main/"
 FONTS = {
-    "FONT_RHYMES": "rhymes%20woff/Rhymes%20Display%20Light.woff2",
+    "FONT_RHYMES_TEXT": "rhymes%20woff/Rhymes%20Text%20Light.woff2",
+    "FONT_RHYMES_ITALIC": "rhymes%20woff/Rhymes%20Display%20SemiBold%20Italic.woff2",
     "FONT_FAKT_400": "Fakt%20WOFF/FaktTT-Normal.woff2",
     "FONT_FAKT_500": "Fakt%20WOFF/FaktTT-Medium.woff2",
-    "FONT_FAKT_700": "Fakt%20WOFF/FaktTT-Bold.woff2",
 }
 IMAGES = {"IMG_HERO": "assets/hero.jpg", "IMG_INTERIOR": "assets/interior.jpg"}
-LOGO = ("https://eupsscf.stripocdn.email/content/guids/CABINET_399e3ce7c0233178f8ffdcf5f73b4ebe7cc6aec5daeb767c90c6e81e04368330"
-        "/images/atlas_logo_combined2.png")
+# Vector logo traced from the atlas.com.au header; inlined so it inherits currentColor.
+LOGO_SVG = (HERE / "assets/atlas-logo.svg").read_text().strip().replace(
+    "<svg ", '<svg aria-hidden="true" focusable="false" ', 1)
 
 def data_uri(path, mime):
     return f"data:{mime};base64," + base64.b64encode(pathlib.Path(path).read_bytes()).decode()
 
 def render(inline, font_dir=None):
     html = (HERE / "property.src.html").read_text()
-    subs = {"LOGO": LOGO}
+    subs = {"LOGO_SVG": LOGO_SVG}
     for k, rel in FONTS.items():
         if inline:
             local = pathlib.Path(font_dir) / rel.split("/")[-1].replace("%20", "-")
