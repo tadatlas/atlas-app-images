@@ -1,0 +1,476 @@
+<title>Atlas Property Page</title>
+<meta name="theme-color" content="#EBE4DF">
+<style>
+@font-face{font-family:'Rhymes Display';font-weight:300;font-display:swap;src:url('{{FONT_RHYMES}}') format('woff2')}
+@font-face{font-family:'Fakt';font-weight:400;font-display:swap;src:url('{{FONT_FAKT_400}}') format('woff2')}
+@font-face{font-family:'Fakt';font-weight:500;font-display:swap;src:url('{{FONT_FAKT_500}}') format('woff2')}
+@font-face{font-family:'Fakt';font-weight:700;font-display:swap;src:url('{{FONT_FAKT_700}}') format('woff2')}
+
+/* Atlas tokens. Light = Sand + Terra, dark = Asset Library set. */
+:root{
+  --ground:#EBE4DF;          /* Sand */
+  --card:#FFFFFF;
+  --tile:#F3EFEB;
+  --ink:#1E1E1E;             /* Stone */
+  --body:#57534D;
+  --muted:#6F6A62;
+  --faint:#A8A29A;
+  --line:rgba(30,30,30,.09);
+  --chip:rgba(30,30,30,.05);
+  --terra:#734137;
+  --cta:#1E1E1E; --cta-ink:#FFFFFF;
+  --key-in:linear-gradient(160deg,#f6f1ea,#e9e1d6); --key-icon:#1E1E1E;
+  --shadow:0 1px 2px rgba(30,30,30,.05),0 16px 32px -16px rgba(30,30,30,.26);
+  --bar:rgba(235,228,223,.86);
+  --logo-filter:none;
+  --grad:linear-gradient(118deg,#734137,#bd7d5e,#283B48,#6e8a93,#caa98f);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1E1E1E; --card:#262523; --tile:#2b2a27;
+    --ink:#FFFFFF; --body:rgba(255,255,255,.72); --muted:rgba(255,255,255,.5); --faint:rgba(255,255,255,.35);
+    --line:rgba(255,255,255,.09); --chip:rgba(255,255,255,.08);
+    --terra:#CAA98F;
+    --cta:#FFFFFF; --cta-ink:#1E1E1E;
+    --key-in:linear-gradient(160deg,#2d2c2a,#1a1916); --key-icon:#FFFFFF;
+    --shadow:0 1px 3px rgba(0,0,0,.3),0 14px 28px -22px rgba(0,0,0,.5);
+    --bar:rgba(30,30,30,.84);
+    --logo-filter:invert(1);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1E1E1E; --card:#262523; --tile:#2b2a27;
+  --ink:#FFFFFF; --body:rgba(255,255,255,.72); --muted:rgba(255,255,255,.5); --faint:rgba(255,255,255,.35);
+  --line:rgba(255,255,255,.09); --chip:rgba(255,255,255,.08);
+  --terra:#CAA98F;
+  --cta:#FFFFFF; --cta-ink:#1E1E1E;
+  --key-in:linear-gradient(160deg,#2d2c2a,#1a1916); --key-icon:#FFFFFF;
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 14px 28px -22px rgba(0,0,0,.5);
+  --bar:rgba(30,30,30,.84);
+  --logo-filter:invert(1);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'Fakt',-apple-system,system-ui,'Segoe UI',sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.page{max-width:520px;margin:0 auto;padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+.serif{font-family:'Rhymes Display',Georgia,'Times New Roman',serif;font-weight:300;line-height:1.22}
+.label{font-weight:500;font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--terra);outline-offset:2px;border-radius:6px}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--bar);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;height:22px;text-decoration:none;color:var(--ink)}
+.logo img{height:22px;width:auto;filter:var(--logo-filter)}
+.logo .word{display:none;align-items:center;gap:8px;font-weight:500;font-size:14px;letter-spacing:5px}
+.logo .word i{width:16px;height:16px;border:1.5px solid currentColor;border-radius:50%;display:block}
+.logo.fallback img{display:none}.logo.fallback .word{display:flex}
+.top .share{display:flex;align-items:center;gap:6px;background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:7px 11px;font-size:13px;font-weight:500;cursor:pointer}
+
+/* Hero gallery */
+.hero{position:relative}
+.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail figure{margin:0;flex:0 0 100%;scroll-snap-align:start;aspect-ratio:4/5;max-height:640px;background:var(--tile)}
+.rail img{width:100%;height:100%;object-fit:cover;display:block}
+.glass{position:absolute;display:flex;align-items:center;gap:6px;background:rgba(20,20,22,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:12px;padding:6px 10px;font-size:12px;font-weight:500;letter-spacing:.3px}
+.glass.count{right:14px;bottom:60px}
+.glass.status{left:14px;top:14px;text-transform:uppercase;letter-spacing:1.4px;font-size:10.5px}
+.glass.status b{width:6px;height:6px;border-radius:50%;background:#CAA98F;display:block}
+
+/* Summary card overlaps hero */
+.summary{position:relative;margin:-44px 18px 0;background:var(--card);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line);padding:22px 20px 20px}
+.note{display:flex;gap:12px;align-items:flex-start;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--tile);border:1px solid var(--line);font-weight:500;font-size:13px;letter-spacing:.5px;color:var(--ink)}
+.note p{margin:0;color:var(--body);font-size:14.5px}
+.note p strong{color:var(--ink);font-weight:500}
+h1.addr{font-size:31px;margin:0;text-wrap:balance}
+.suburb{margin-top:6px}
+.specs{display:flex;flex-wrap:wrap;gap:8px 16px;margin:16px 0 0;padding:0;list-style:none;color:var(--body);font-size:14px}
+.specs li{display:flex;align-items:center;gap:6px}
+.sale{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:18px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sale div{background:var(--card);padding:12px 14px}
+.sale .v{font-size:16px;font-weight:500;margin-top:3px}
+.sale .s{font-size:12.5px;color:var(--muted)}
+
+/* Sections: one card each, header inside */
+.sec{margin:14px 18px 0;background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow);padding:20px}
+.sec > .label{display:block;margin-bottom:14px}
+.sec h2{font-size:25px;margin:0 0 12px;text-wrap:balance}
+
+/* Inspections */
+.ofi{display:grid;gap:10px}
+.slot{display:flex;align-items:center;gap:14px;padding:12px;border:1px solid var(--line);border-radius:14px}
+.date{width:52px;flex:none;text-align:center;border-radius:11px;background:var(--tile);padding:7px 0 6px}
+.date .d{display:block;font-size:10px;letter-spacing:1.5px;font-weight:500;color:var(--muted);text-transform:uppercase}
+.date .n{display:block;font-size:21px;line-height:1.1;font-weight:500}
+.slot .when{flex:1;min-width:0}
+.slot .t{font-weight:500;white-space:nowrap}
+.slot .m{font-size:13px;color:var(--muted)}
+.soon{display:inline-block;margin-right:6px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;font-weight:500;color:var(--terra)}
+.ghost{display:grid;place-items:center;flex:none;width:40px;height:40px;border:1px solid var(--line);background:var(--chip);border-radius:12px;text-decoration:none;cursor:pointer}
+.link-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:14px;color:var(--body)}
+.link-row button{background:none;border:0;padding:0;font-weight:500;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* Documents */
+.docs{list-style:none;margin:0;padding:0}
+.doc{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line);text-decoration:none}
+.docs li:first-child .doc{border-top:0;padding-top:2px}
+.ficon{width:40px;height:40px;flex:none;border-radius:11px;background:var(--tile);display:grid;place-items:center;color:var(--muted)}
+.doc .txt{flex:1;min-width:0}
+.doc .t{display:block;font-weight:500}
+.doc .m{display:block;font-size:12.5px;color:var(--muted)}
+.doc .dl{color:var(--muted)}
+.key-doc .ficon{background:var(--ink);color:var(--card)}
+.tag{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:7px;background:var(--chip);border:1px solid var(--line);font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:500;color:var(--body);vertical-align:2px}
+
+/* The home */
+.story{color:var(--body);max-width:62ch}
+.story p{margin:0 0 12px}
+.story.clamped .more-copy{display:none}
+.toggle{background:none;border:0;padding:0;font-weight:500;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.feats{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:9px}
+.feats li{display:flex;gap:10px;color:var(--body);font-size:14.5px}
+.feats li::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;background:var(--terra);margin-top:8px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:18px}
+.facts div{background:var(--card);padding:12px 10px}
+.facts .v{font-size:14px;font-weight:500;margin-top:2px;white-space:nowrap}
+
+/* Interior image card */
+.feature-img{margin:14px 18px 0;border-radius:18px;overflow:hidden;position:relative;box-shadow:var(--shadow);aspect-ratio:4/5;max-height:560px;background:var(--tile)}
+.feature-img img{width:100%;height:100%;object-fit:cover;display:block}
+.feature-img figcaption{position:absolute;inset:auto 0 0 0;padding:60px 20px 18px;background:linear-gradient(to top,rgba(0,0,0,.66),rgba(0,0,0,0));color:#fff}
+.feature-img figcaption .serif{font-size:22px}
+.feature-img figcaption .label{color:rgba(255,255,255,.72)}
+
+/* Nearby */
+.near{list-style:none;margin:0;padding:0}
+.near li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.near li:first-child{border-top:0;padding-top:0}
+.near .p{font-weight:500}
+.near .k{font-size:12.5px;color:var(--muted)}
+.near .d{font-size:13.5px;color:var(--body);white-space:nowrap}
+
+/* Agents */
+.agents{display:grid;gap:12px}
+.agent{display:flex;gap:14px;align-items:center}
+.agent .avatar{width:56px;height:56px;font-size:16px;border-radius:16px}
+.agent .who{flex:1;min-width:0}
+.agent .nm{font-weight:500;font-size:16px}
+.agent .rl{font-size:12.5px;color:var(--muted)}
+.agent .ph{font-size:13.5px;color:var(--body);user-select:all}
+.acts{display:flex;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--chip);border:1px solid var(--line);text-decoration:none}
+.agent + .agent{padding-top:12px;border-top:1px solid var(--line)}
+
+/* Appraisal */
+.appraise{background:var(--tile)}
+.appraise p{margin:0 0 16px;color:var(--body)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--cta);color:var(--cta-ink);border:0;border-radius:14px;padding:13px 18px;font-weight:500;font-size:15px;text-decoration:none;cursor:pointer}
+
+/* Footer */
+footer{margin:28px 18px 0;padding:0 2px;color:var(--muted);font-size:12px}
+footer .tl{font-size:20px;color:var(--ink);margin-bottom:10px}
+footer .tl em{font-style:italic}
+footer p{margin:0 0 10px;max-width:60ch}
+
+/* Sticky action bar */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bar);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.dock .in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.dock .ctx{flex:1;min-width:0;line-height:1.25}
+.dock .ctx b{display:block;font-weight:500;font-size:14.5px}
+.dock .ctx span{font-size:12px;color:var(--muted)}
+.key{border-radius:14px;padding:.85px;background:var(--grad);flex:none;text-decoration:none}
+.key .in2{width:46px;height:46px;border-radius:13.2px;background:var(--key-in);display:grid;place-items:center;color:var(--key-icon)}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:520px;background:var(--card);border-radius:22px 22px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+.grab{width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 16px}
+.sheet h3{font-size:24px;margin:0 0 4px}
+.sheet .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+.field{display:grid;gap:6px;margin-bottom:12px}
+.field input,.field select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:12px;padding:12px 13px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet .btn{width:100%;margin-top:6px}
+.done{text-align:left;padding:8px 0 4px}
+.done p{color:var(--body);margin:6px 0 16px}
+.close{background:none;border:0;color:var(--muted);font-size:14px;margin-top:12px;width:100%;cursor:pointer}
+
+@media (min-width:560px){ .page{padding-top:18px} .hero{margin:0 18px;border-radius:20px;overflow:hidden} }
+@media (prefers-reduced-motion:reduce){ *{scroll-behavior:auto!important;transition:none!important} }
+</style>
+
+<div class="page">
+  <header class="top">
+    <a class="logo" id="logo" href="https://atlas.com.au" aria-label="Atlas Real Estate">
+      <img src="{{LOGO}}" alt="Atlas" onerror="this.parentNode.classList.add('fallback')">
+      <span class="word"><i></i>ATLAS</span>
+    </a>
+    <button class="share" id="share" type="button">
+      <svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+      <span id="share-l">Share</span>
+    </button>
+  </header>
+
+  <section class="hero" aria-label="Photos">
+    <div class="rail" id="rail">
+      <figure><img src="{{IMG_HERO}}" alt="Front of the home at dusk, sandstone and glass over two levels"></figure>
+      <figure><img src="{{IMG_INTERIOR}}" alt="Living room with polished concrete floor and late afternoon light"></figure>
+    </div>
+    <span class="glass status"><b></b>For sale · Auction</span>
+    <span class="glass count num" id="count">1 / 2</span>
+  </section>
+
+  <section class="summary">
+    <div class="note">
+      <div class="avatar" aria-hidden="true">SL</div>
+      <p id="greet"><strong>Thanks for your enquiry.</strong> The contract, reports and inspection times are all below. Any questions, just reply to my text. <span class="num">– Sophie</span></p>
+    </div>
+    <h1 class="addr serif">8 Ashdown Lane</h1>
+    <div class="label suburb">Bowral NSW 2576</div>
+    <ul class="specs">
+      <li><svg class="i" viewBox="0 0 24 24"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 14h18M6 10V7a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3M12 10V7a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3M3 18v2M21 18v2"/></svg>4 bed</li>
+      <li><svg class="i" viewBox="0 0 24 24"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3zM6 12V6a2 2 0 0 1 3.5-1.3M7 19l-1 2M17 19l1 2"/></svg>3 bath</li>
+      <li><svg class="i" viewBox="0 0 24 24"><path d="M5 16V11l2-5h10l2 5v5M5 16h14M5 16v2M19 16v2M5 11h14"/><circle cx="8" cy="13.5" r=".6"/><circle cx="16" cy="13.5" r=".6"/></svg>2 car</li>
+      <li><svg class="i" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h4M16 4v4M12 20v-5h8"/></svg><span class="num">2,024 sqm</span></li>
+    </ul>
+    <div class="sale">
+      <div><span class="label">Auction</span><div class="v">Sat 17 Oct, 11:00am</div><div class="s">On site, unless sold prior</div></div>
+      <div><span class="label">Price guide</span><div class="v num">$3,400,000</div><div class="s">Comparable sales on request</div></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="ofi-h">
+    <span class="label" id="ofi-h">Open for inspection</span>
+    <div class="ofi" id="ofi"></div>
+    <div class="link-row">
+      <span>Can't make it?</span>
+      <button type="button" data-open="private">Book a private inspection</button>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="doc-h">
+    <span class="label" id="doc-h">Contract &amp; reports</span>
+    <ul class="docs">
+      <li><a class="doc key-doc" href="#contract">
+        <span class="ficon"><svg class="i" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4"/></svg></span>
+        <span class="txt"><span class="t">Contract of sale</span><span class="m">PDF · 3.1 MB · Read before auction day</span></span>
+        <svg class="i dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></li>
+      <li><a class="doc" href="#building-pest">
+        <span class="ficon"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-5h4v5"/></svg></span>
+        <span class="txt"><span class="t">Building &amp; pest report</span><span class="m">PDF · 4.8 MB · September 2026</span></span>
+        <svg class="i dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></li>
+      <li><a class="doc" href="#floorplan">
+        <span class="ficon"><svg class="i" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 12h7M11 4v5M15 12h5M11 16v4"/></svg></span>
+        <span class="txt"><span class="t">Floorplan &amp; site plan</span><span class="m">PDF · 1.2 MB · 318 sqm internal</span></span>
+        <svg class="i dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></li>
+      <li><a class="doc" href="#compliance">
+        <span class="ficon"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg></span>
+        <span class="txt"><span class="t">AML/CTF fact sheet &amp; collection notice</span><span class="m">PDF · 0.4 MB · Required reading</span></span>
+        <svg class="i dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="home-h">
+    <span class="label">The home</span>
+    <h2 class="serif" id="home-h">Sandstone, glass and half an acre of garden</h2>
+    <div class="story clamped" id="story">
+      <p>Set back behind native grasses on a quiet lane, this is a house built around the light. Sandstone walls hold the warmth of the day, and full-height glass opens the living room straight onto the terrace.</p>
+      <p class="more-copy">Four bedrooms sit upstairs, away from the living areas, with a main suite that looks into the tree canopy. Downstairs, kitchen, dining and lounge run as one long room, anchored by a double-sided fireplace that takes care of Highlands winters.</p>
+      <p class="more-copy">Bowral's cafés and Corbett Plaza are four minutes by car. The station is five, for an easy run to the city.</p>
+    </div>
+    <button class="toggle" id="toggle" type="button" aria-expanded="false" aria-controls="story">Read more</button>
+    <ul class="feats">
+      <li>North-facing living onto a covered stone terrace</li>
+      <li>Double-sided wood fireplace between lounge and dining</li>
+      <li>Main suite with walk-in robe and ensuite</li>
+      <li>Ducted heating and cooling throughout</li>
+      <li>Double garage with internal access and storage</li>
+    </ul>
+    <div class="facts num">
+      <div><span class="label">Land</span><div class="v">2,024 sqm</div></div>
+      <div><span class="label">Internal</span><div class="v">318 sqm</div></div>
+      <div><span class="label">Built</span><div class="v">2019</div></div>
+      <div><span class="label">Aspect</span><div class="v">North</div></div>
+      <div><span class="label">Council</span><div class="v">$1,020/qtr</div></div>
+      <div><span class="label">Water</span><div class="v">$290/qtr</div></div>
+    </div>
+  </section>
+
+  <figure class="feature-img">
+    <img src="{{IMG_INTERIOR}}" alt="Living room in late afternoon light">
+    <figcaption><div class="label">Living</div><div class="serif">West light across polished concrete from 4pm</div></figcaption>
+  </figure>
+
+  <section class="sec" aria-labelledby="near-h">
+    <span class="label" id="near-h">Around the corner</span>
+    <ul class="near">
+      <li><span><span class="p">Bowral town centre</span><br><span class="k">Cafés, Corbett Plaza, Bong Bong Street</span></span><span class="d num">4 min drive</span></li>
+      <li><span><span class="p">Bowral station</span><br><span class="k">Southern Highlands line</span></span><span class="d num">5 min drive</span></li>
+      <li><span><span class="p">Bowral Public School</span><br><span class="k">In catchment</span></span><span class="d num">8 min walk</span></li>
+      <li><span><span class="p">Mount Gibraltar Reserve</span><br><span class="k">Walking tracks and lookouts</span></span><span class="d num">6 min drive</span></li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="agent-h">
+    <span class="label" id="agent-h">Your agents</span>
+    <div class="agents">
+      <div class="agent">
+        <div class="avatar" aria-hidden="true">SL</div>
+        <div class="who"><div class="nm">Sophie Laurent</div><div class="rl">Director, Southern Highlands</div><div class="ph num">0400 123 456</div></div>
+        <div class="acts">
+          <a class="icon-btn" href="sms:+61400123456" aria-label="Text Sophie"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></a>
+          <a class="icon-btn" href="tel:+61400123456" aria-label="Call Sophie"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1"/></svg></a>
+        </div>
+      </div>
+      <div class="agent">
+        <div class="avatar" aria-hidden="true">JH</div>
+        <div class="who"><div class="nm">James Hartley</div><div class="rl">Sales Associate, Southern Highlands</div><div class="ph num">0400 654 321</div></div>
+        <div class="acts">
+          <a class="icon-btn" href="sms:+61400654321" aria-label="Text James"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></a>
+          <a class="icon-btn" href="tel:+61400654321" aria-label="Call James"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec appraise" aria-labelledby="app-h">
+    <span class="label">Selling in the Highlands?</span>
+    <h2 class="serif" id="app-h">Find out what your home is worth</h2>
+    <p>An appraisal from the agents who sell your street, backed by this month's local sales. No obligation.</p>
+    <button class="btn" type="button" data-open="appraisal">Request an appraisal</button>
+  </section>
+
+  <footer>
+    <div class="tl serif">Real Estate, <em>Reimagined.</em></div>
+    <p>Atlas Real Estate · Lower North Shore · Southern Highlands · Byron Bay · Brisbane</p>
+    <p>All information is gathered from sources we believe to be reliable, but we can't guarantee its accuracy. Interested parties should rely on their own enquiries.</p>
+    <p>Sample listing for design review. Address, agents and figures are illustrative.</p>
+  </footer>
+</div>
+
+<div class="dock" role="region" aria-label="Quick actions">
+  <div class="in">
+    <div class="ctx"><b id="dock-t">Open Wed 30 Sep, 5:00pm</b><span>Auction Sat 17 Oct · Guide <span class="num">$3.4m</span></span></div>
+    <button class="btn" type="button" data-open="private">Book inspection</button>
+    <a class="key" href="tel:+61400123456" aria-label="Call Sophie Laurent"><span class="in2"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1"/></svg></span></a>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h">
+    <div class="grab"></div>
+    <form id="form" novalidate>
+      <h3 class="serif" id="sheet-h">Book a private inspection</h3>
+      <p class="sub" id="sheet-sub">Pick a time that suits. Sophie will text you to confirm.</p>
+      <div class="field"><label class="label" for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+      <div class="field"><label class="label" for="f-mob">Mobile</label><input id="f-mob" name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="04" required></div>
+      <div class="row2" id="time-row">
+        <div class="field"><label class="label" for="f-day">Day</label><select id="f-day" name="day"><option>Mon 28 Sep</option><option>Tue 29 Sep</option><option>Thu 1 Oct</option><option>Fri 2 Oct</option></select></div>
+        <div class="field"><label class="label" for="f-time">Time</label><select id="f-time" name="time"><option>Morning</option><option>Midday</option><option>Afternoon</option></select></div>
+      </div>
+      <button class="btn" type="submit" id="f-submit">Send request</button>
+    </form>
+    <div class="done" id="done" hidden>
+      <h3 class="serif">Request received</h3>
+      <p id="done-p">Sophie will text you to confirm a time.</p>
+    </div>
+    <button class="close" type="button" id="close">Close</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Personalise from the SMS link: ?n=Sarah
+  var name = '';
+  try { name = (new URLSearchParams(location.search).get('n') || '').replace(/[^\p{L}\s'-]/gu,'').slice(0,24).trim(); } catch(e){}
+  if (name) {
+    document.getElementById('greet').firstChild.textContent = 'Hi ' + name + ', thanks for your enquiry.';
+    document.getElementById('f-name').value = name;
+  }
+
+  // Inspections (source of truth for list, calendar links and dock)
+  var slots = [
+    {d:'2026-09-30', s:'17:00', e:'17:30'},
+    {d:'2026-10-03', s:'10:00', e:'10:30'},
+    {d:'2026-10-10', s:'10:00', e:'10:30'}
+  ];
+  var addr = '8 Ashdown Lane, Bowral NSW 2576';
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function t12(hm){var p=hm.split(':'),h=+p[0];return (h%12||12)+':'+p[1]+(h<12?'am':'pm');}
+  function gcal(s){
+    var ymd=s.d.replace(/-/g,''), a=s.s.replace(':',''), b=s.e.replace(':','');
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Inspection: 8 Ashdown Lane')+
+      '&dates='+ymd+'T'+a+'00/'+ymd+'T'+b+'00&ctz=Australia/Sydney&location='+encodeURIComponent(addr);
+  }
+  var wrap=document.getElementById('ofi');
+  slots.forEach(function(s,i){
+    var dt=new Date(s.d+'T12:00:00');
+    var el=document.createElement('div'); el.className='slot';
+    el.innerHTML='<div class="date"><span class="d">'+DAYS[dt.getDay()]+'</span><span class="n num">'+dt.getDate()+'</span></div>'+
+      '<div class="when"><div class="t num">'+t12(s.s)+' – '+t12(s.e)+'</div>'+
+      '<div class="m">'+(i===0?'<span class="soon">Next</span>':'')+DAYS[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()]+' · On site</div></div>'+
+      '<a class="ghost" target="_blank" rel="noopener" aria-label="Add to calendar" title="Add to calendar" href="'+gcal(s)+'"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M12 13v4M10 15h4"/></svg></a>';
+    wrap.appendChild(el);
+  });
+  var n=new Date(slots[0].d+'T12:00:00');
+  document.getElementById('dock-t').textContent='Open '+DAYS[n.getDay()]+' '+n.getDate()+' '+MON[n.getMonth()]+', '+t12(slots[0].s);
+
+  // Gallery counter
+  var rail=document.getElementById('rail'), count=document.getElementById('count'), total=rail.children.length;
+  rail.addEventListener('scroll',function(){ count.textContent=(Math.round(rail.scrollLeft/rail.clientWidth)+1)+' / '+total; },{passive:true});
+
+  // Read more
+  var story=document.getElementById('story'), tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){
+    var open=story.classList.toggle('clamped')===false;
+    tg.textContent=open?'Show less':'Read more'; tg.setAttribute('aria-expanded',open);
+  });
+
+  // Share: copy link
+  document.getElementById('share').addEventListener('click',function(){
+    var l=document.getElementById('share-l'), url=location.href.split('?')[0];
+    if (navigator.share) { navigator.share({title:addr,url:url}).catch(function(){}); return; }
+    (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(function(){l.textContent='Link copied';},function(){l.textContent='Copy failed';});
+    setTimeout(function(){l.textContent='Share';},2200);
+  });
+
+  // Sheet
+  var scrim=document.getElementById('scrim'), form=document.getElementById('form'), done=document.getElementById('done');
+  var copy={
+    private:{h:'Book a private inspection',sub:'Pick a time that suits. Sophie will text you to confirm.',time:true,btn:'Send request',ok:'Sophie will text you to confirm a time.'},
+    appraisal:{h:'Request an appraisal',sub:'Leave your details and the Southern Highlands team will be in touch.',time:false,btn:'Request appraisal',ok:'The Southern Highlands team will be in touch within one business day.'}
+  };
+  function open(kind){
+    var c=copy[kind];
+    document.getElementById('sheet-h').textContent=c.h;
+    document.getElementById('sheet-sub').textContent=c.sub;
+    document.getElementById('time-row').hidden=!c.time;
+    document.getElementById('f-submit').textContent=c.btn;
+    document.getElementById('done-p').textContent=c.ok;
+    form.hidden=false; done.hidden=true; scrim.hidden=false;
+    setTimeout(function(){document.getElementById(name?'f-mob':'f-name').focus();},30);
+  }
+  function close(){scrim.hidden=true;}
+  document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){open(b.getAttribute('data-open'));});});
+  document.getElementById('close').addEventListener('click',close);
+  scrim.addEventListener('click',function(e){if(e.target===scrim)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var nm=document.getElementById('f-name'), mb=document.getElementById('f-mob');
+    if(!nm.value.trim()){nm.focus();return;}
+    if(mb.value.replace(/\D/g,'').length<10){mb.focus();mb.setCustomValidity('Enter a 10-digit mobile number');mb.reportValidity();return;}
+    mb.setCustomValidity('');
+    // TODO: POST to the CRM webhook here.
+    form.hidden=true; done.hidden=false;
+  });
+})();
+</script>
