@@ -1,0 +1,57 @@
+{
+  "_source": "Notion Property Marketing Database (synced 28 Oct 2026) + request from Agent Services. Copy written from confirmed facts only; cross-check against the website listing copy before send.",
+
+  "campaign_slug": "property_34jeffreys_kirribilli_31oct2026",
+  "title": "34 Jeffreys Street, Kirribilli | Open Saturday 31 October",
+  "subject": "A rare harbourside setting in Kirribilli",
+  "preheader": "34 Jeffreys Street is open this Saturday, 9:15am – 9:45am.",
+
+  "header": {"line_1": "SATURDAY 31 OCTOBER", "line_2": "OPEN INSPECTION"},
+
+  "property": {
+    "id": "1P9873",
+    "street": "34 Jeffreys Street",
+    "suburb": "Kirribilli",
+    "url": "https://www.atlas.com.au/property/34-jeffreys-street-kirribilli-nsw-1p98733",
+    "beds": 4, "baths": 4, "cars": 2,
+    "hero": "https://agentboxcdn.com.au/clients-data/26319/public_html/media/lt/1/1P9873/178001599523132048-rsd.jpg",
+    "gallery": [
+      "https://agentboxcdn.com.au/clients-data/26319/public_html/media/lt/1/1P9873/177803292195497803-rsd.jpg",
+      "https://agentboxcdn.com.au/clients-data/26319/public_html/media/lt/1/1P9873/177803292364652326-rsd.jpg"
+    ]
+  },
+
+  "eyebrow": "FOR SALE",
+  "headline": "A rare harbourside setting in Kirribilli",
+  "body": [
+    "34 Jeffreys Street is an elevated terrace with harbour outlooks, set on 158sqm with four bedrooms, four bathrooms and parking for two cars.",
+    "Harbourside settings like this are rarely offered in Kirribilli. With 42 Jeffreys Street recently sold a few doors along, Saturday is the time to see it in person.",
+    "We look forward to seeing you there."
+  ],
+
+  "inspection": {"label": "OPEN INSPECTION", "day": "Saturday 31 October", "time": "9:15am – 9:45am"},
+  "cta": {"label": "VIEW PROPERTY"},
+
+  "agents": [
+    {"name": "Peter Kakos", "phone": "0418 123 993", "email": "peterkakos@atlas.com.au"},
+    {"name": "Alicia Chen", "phone": "0452 660 413", "email": "aliciachen@atlas.com.au"}
+  ],
+
+  "sold": {
+    "heading": "Recently Sold",
+    "items": [
+      {
+        "id": "1P11051",
+        "street": "42 Jeffreys Street",
+        "suburb": "Kirribilli",
+        "url": "https://www.atlas.com.au/property/42-jeffreys-street-kirribilli-nsw-1p110513",
+        "beds": 4, "baths": 4, "cars": 0,
+        "image": "https://agentboxcdn.com.au/clients-data/26319/public_html/media/lt/1/1P11051/178581988475840602-rsd.jpg",
+        "price_label": "SOLD PRICE",
+        "price": "Contact Peter Kakos or Alicia Chen"
+      }
+    ]
+  },
+
+  "sender": {"name": "Peter Kakos", "email": "peterkakos@atlas.com.au", "reply_to": "peterkakos@atlas.com.au"}
+}
