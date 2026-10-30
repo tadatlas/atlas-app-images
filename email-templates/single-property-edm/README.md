@@ -4,7 +4,7 @@
 **Cadence:** On request from Agent Services or the listing agent, usually 1–2 days before the inspection.
 **Source file:** Built from `data/<slug>.json` by `build.py`. Chrome (head/CSS, header, OFF-MARKET ACCESS, footer) is lifted verbatim from the Weekly OFI Stripo export into `partials/`.
 **Build script:** `python build.py data/<slug>.json --check` → `output/<slug>.html`
-**ActiveCampaign template:** `Atlas | Single Property EDM` (saved from the first send, 34 Jeffreys Street, Kirribilli).
+**ActiveCampaign:** paste `output/<slug>.html` into a campaign using ActiveCampaign's HTML (code) editor — the same route as the Weekly OFI. Do not use the AI/API import (`generate_campaign` / `import_campaign_design`): it rebuilds the email in designer markup and drops the mobile CSS (confirmed on the 34 Jeffreys build, campaign 717).
 
 To make this part of the `atlas-email` skill, copy this file to `references/templates/single-property.md` and add a row to the skill's reference index.
 
@@ -64,7 +64,8 @@ Band order is white → sand → navy → dark. Dropping the Sold block leaves w
 - From: lead listing agent (name + `@atlas.com.au` address); reply-to the same.
 - Subject ≤ ~40 characters; preview text carries the address and inspection time.
 - Audience: a buyer-requirements segment matched to the price bracket, or the lead agent's primary-owner segment. Confirm with the requester every time — it is not inferable from the listing.
-- Import: `generate_campaign(html=<output file>)`, then set subject/preheader/sender with `update_campaign_message`, audience with `set_campaign_audience`, then `prepare_campaign_send` / `prepare_campaign_schedule` and get explicit sign-off before confirming.
+- Load: create the campaign with the HTML (code) editor and paste the built file. Set subject, preheader, sender and audience, send a test to yourself, check it on a phone, then send or schedule after sign-off.
+- Do not load it through the AI/API import — it rebuilds the layout and strips the mobile CSS (see Known faults).
 
 ## Known faults
 
@@ -73,4 +74,5 @@ Band order is white → sand → navy → dark. Dropping the Sold block leaves w
 | Footer `PRIVACY POLICY` / `UNSUBSCRIBE` are plain text, not links (inherited from OFI chrome) | ActiveCampaign footer carries `%UNSUBSCRIBELINK%`; fix at source in Stripo |
 | Header logo is white-on-transparent PNG — invisible in previews that drop images | None needed; flag only if a client blocks images |
 | Inspection panel and cards stay two-up on mobile (50% columns, as in the OFI) | Keep CTA label ≤ 14 characters or it wraps |
+| ActiveCampaign AI/API import (`generate_campaign` html import) rebuilds the email in designer markup: button classes, most `@media` rules and some copy blocks change (74 diff hunks on the 34 Jeffreys build) | Paste the HTML into the HTML/code editor instead |
 | Image hosts (`asteroidcdn`, `reapit`, `stripocdn`) and atlas.com.au are not reachable from Claude's cloud sandbox | Links and images can't be HTTP-checked there; run `scripts/verify_email.py` without `--no-net` locally, and send a test before the live send |
