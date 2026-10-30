@@ -1,0 +1,54 @@
+{
+  "_source": "Copy this file to data/<street>-<suburb>-<ddmmmyyyy>.json. Pull facts from Notion > Property Marketing Database > Properties. Delete the sold block if there is no relevant recent sale.",
+
+  "campaign_slug": "property_<street>_<suburb>_<ddmmmyyyy>",
+  "title": "<Street>, <Suburb> | Open <Day> <D Month>",
+  "subject": "<= ~40 characters, one idea",
+  "preheader": "<Street> is open this <Day>, <h:mmam> – <h:mmam>.",
+
+  "header": {"line_1": "<DAY D MONTH>", "line_2": "OPEN INSPECTION"},
+
+  "property": {
+    "id": "<AgentBox ID e.g. 1P9873>",
+    "street": "<Street only>",
+    "suburb": "<Suburb>",
+    "url": "<Listing link from Notion>",
+    "beds": 0, "baths": 0, "cars": 0,
+    "hero": "<Hero photo URL>",
+    "gallery": ["<Photo URL>", "<Photo URL>"]
+  },
+
+  "eyebrow": "FOR SALE",
+  "headline": "<Sentence-case headline, no full stop>",
+  "body": [
+    "<Paragraph 1 — what the home is, confirmed facts only>",
+    "<Paragraph 2 — why now / proof point>",
+    "<Optional short close>"
+  ],
+
+  "inspection": {"label": "OPEN INSPECTION", "day": "<Day D Month>", "time": "<h:mmam> – <h:mmam>"},
+  "cta": {"label": "VIEW PROPERTY"},
+
+  "agents": [
+    {"name": "<Agent 1>", "phone": "<04xx xxx xxx>", "email": "<name@atlas.com.au>"},
+    {"name": "<Agent 2>", "phone": "<04xx xxx xxx>", "email": "<name@atlas.com.au>"}
+  ],
+
+  "sold": {
+    "heading": "Recently Sold",
+    "items": [
+      {
+        "id": "<AgentBox ID>",
+        "street": "<Street only>",
+        "suburb": "<Suburb>",
+        "url": "<Listing link from Notion>",
+        "beds": 0, "baths": 0, "cars": 0,
+        "image": "<Hero photo URL>",
+        "price_label": "SOLD PRICE",
+        "price": "<Price, or agent's wording e.g. Contact Agent Name>"
+      }
+    ]
+  },
+
+  "sender": {"name": "<Lead agent>", "email": "<name@atlas.com.au>", "reply_to": "<name@atlas.com.au>"}
+}
