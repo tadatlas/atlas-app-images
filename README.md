@@ -8,6 +8,9 @@ Images used in the **Atlas iQ** app (Softr). This repo is public so the images c
 | --- | --- |
 | `Market Intelligence.png` | Dark concrete interior with a terracotta chair, lit by late sun |
 | `image3.png` | Two-storey modern home at dusk, windows lit warm |
+| `landing/` | Property page in the Atlas iQ app design (concept). The website-styled version for the live SMS campaign is in `atlasiqmarketing/landing-pages/sms-property/`. |
+
+Marketing emails don't belong here. They live in the private `atlasiqmarketing` repo.
 
 ## How to link to an image
 
